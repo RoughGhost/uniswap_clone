@@ -65,7 +65,7 @@ export const TransactionProvider = ({ children }) => {
     setFormData((prevState) => ({ ...prevState, [name]: e.target.value }))
   }
 
-  /**
+  /*
    * Checks if MetaMask is installed and an account is connected
    * @param {*} metamask Injected MetaMask code from the browser
    * @returns
@@ -102,7 +102,7 @@ export const TransactionProvider = ({ children }) => {
     }
   }
 
-  /**
+  /*
    * Saves transaction to Sanity DB
    * @param {string} txHash Transaction hash
    * @param {number} amount Amount of ETH that was sent
@@ -143,7 +143,7 @@ export const TransactionProvider = ({ children }) => {
     return
   }
 
-  /**
+  /*
    * Executes a transaction
    * @param {*} metamask Injected MetaMask code from the browser
    * @param {string} currentAccount Current user's address

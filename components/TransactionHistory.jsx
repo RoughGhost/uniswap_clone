@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react'
+import { useEffect, useState } from 'react'
 import { client } from '../lib/sanityClient'
+import { useContext } from 'react'
 import { TransactionContext } from '../context/TransactionContext'
 import Image from 'next/image'
 import ethLogo from '../assets/ethCurrency.png'
@@ -17,19 +18,23 @@ const style = {
 const TransactionHistory = () => {
   const { isLoading, currentAccount } = useContext(TransactionContext)
   const [transactionHistory, setTransactionHistory] = useState([])
+
   useEffect(() => {
     ;(async () => {
       if (!isLoading && currentAccount) {
         const query = `
-               *[_type=="users" && _id == "${currentAccount}"] {
-                   "transactionList": transactions[]->{amount, toAddress, timestamp, txHash}|order(timestamp desc)[0..4]"
-               }
-               `
+          *[_type=="users" && _id == "${currentAccount}"] {
+            "transactionList": transactions[]->{amount, toAddress, timestamp, txHash}|order(timestamp desc)[0..4]
+          }
+        `
+
         const clientRes = await client.fetch(query)
+
         setTransactionHistory(clientRes[0].transactionList)
       }
     })()
   }, [isLoading, currentAccount])
+
   return (
     <div className={style.wrapper}>
       <div>
@@ -42,11 +47,10 @@ const TransactionHistory = () => {
                 <span className={style.toAddress}>
                   {transaction.toAddress.substring(0, 6)}...
                 </span>
-              </div>
-              {''}
-              on{''}
+              </div>{' '}
+              on{' '}
               <div className={style.txTimestamp}>
-                {new Date(transaction.timestamp).toLocaleDateString('en-US', {
+                {new Date(transaction.timestamp).toLocaleString('en-US', {
                   timeZone: 'PST',
                   hour12: true,
                   timeStyle: 'short',
